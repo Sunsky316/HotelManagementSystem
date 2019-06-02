@@ -1,0 +1,42 @@
+CREATE TABLE `hotel` (
+  `hid` varchar(32) NOT NULL,
+  `hname` varchar(50) DEFAULT NULL,		#酒店名称
+  `market_price` double DEFAULT NULL,	#市场（门店）价
+  `shop_price` double DEFAULT NULL,		#商城（预订）价
+  `himage` varchar(200) DEFAULT NULL,	#商品图片路径
+  `hdate` date DEFAULT NULL,			#上架时间
+  `is_hot` int(11) DEFAULT NULL,		#是否热门：0=不热门,1=热门
+  `hdesc` varchar(255) DEFAULT NULL,	#酒店（房间）描述
+  `hflag` int(11) DEFAULT 0,			#酒店标记：0=未下架(默认值),1=已经下架
+  `cid` varchar(32) DEFAULT NULL,		#城市id
+  PRIMARY KEY (`hid`),
+  KEY `product_fk_0001` (`cid`),
+  CONSTRAINT `hotel_fk_0001` FOREIGN KEY (`cid`) REFERENCES `city` (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `orders` (
+  `oid` varchar(32) NOT NULL,
+  `ordertime` datetime DEFAULT NULL,		#下单时间
+  `total` double DEFAULT NULL,				#总价
+  `state` int(11) DEFAULT NULL,				#订单状态：1=未付款;2=已付款,未入住;3=已入住,没离店;4=离店,订单结束
+  `address` varchar(30) DEFAULT NULL,		#入住地址
+  `name` varchar(20) DEFAULT NULL,			#入住人
+  `telephone` varchar(20) DEFAULT NULL,		#入住人电话
+  `uid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`oid`),
+  KEY `order_fk_0001` (`uid`),
+  CONSTRAINT `order_fk_0001` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) ;
+
+
+CREATE TABLE `orderitem` (
+  `itemid` varchar(32) NOT NULL,
+  `quantity` int(11) DEFAULT NULL,			#购买数量
+  `total` double DEFAULT NULL,			#小计
+  `hid` varchar(32) DEFAULT NULL,		#预订酒店的id
+  `oid` varchar(32) DEFAULT NULL,		#订单项所在订单id
+  PRIMARY KEY (`itemid`),
+) ;
+
+
